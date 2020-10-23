@@ -30,7 +30,6 @@ import mekanism.common.item.interfaces.IModeItem;
 import mekanism.common.item.interfaces.IRadialModeItem;
 import mekanism.common.item.interfaces.IRadialSelectorEnum;
 import mekanism.common.lib.radiation.RadiationManager.RadiationScale;
-//import mekanism.common.lib.attribute.AttributeCache;
 import mekanism.common.network.PacketModeChange;
 import mekanism.common.network.PacketPortableTeleporterGui;
 import mekanism.common.network.PacketPortableTeleporterGui.PortableTeleporterPacketType;
