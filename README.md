@@ -8,6 +8,10 @@ This fork is targets Minecraft 1.16.1, and Forge 32, for use in Valhelsia 3 pack
 this fork modified the Mekanism Jetpack so it has a configurable speed value, so you dont look like an idiot flying at walking speed,
 The defualt value is 0.05, which is a pretty good speed, higher values = more speed. 
 
+
+Compare against base commit:
+https://github.com/mekanism/Mekanism/compare/57396538d7e30f274a8b052420b7fa80c3f1a71b...asaf400:1.16.1-JetpackSpeedConfig
+
 # Mekanism for Minecraft 1.16 #
 
 Mekanism is a Minecraft add-on featuring high-tech machinery that can be used to create powerful tools, 
