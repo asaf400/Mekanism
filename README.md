@@ -1,6 +1,13 @@
 
 [![Build Status](https://travis-ci.com/mekanism/Mekanism.svg?branch=1.16.x)](https://travis-ci.com/mekanism/Mekanism)
 
+# FORK #
+
+This fork is targets Minecraft 1.16.1, and Forge 32, for use in Valhelsia 3 pack,
+
+this fork modified the Mekanism Jetpack so it has a configurable speed value, so you dont look like an idiot flying at walking speed,
+The defualt value is 0.05, which is a pretty good speed, higher values = more speed. 
+
 # Mekanism for Minecraft 1.16 #
 
 Mekanism is a Minecraft add-on featuring high-tech machinery that can be used to create powerful tools, 
