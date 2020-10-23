@@ -30,6 +30,7 @@ import mekanism.common.item.interfaces.IModeItem;
 import mekanism.common.item.interfaces.IRadialModeItem;
 import mekanism.common.item.interfaces.IRadialSelectorEnum;
 import mekanism.common.lib.radiation.RadiationManager.RadiationScale;
+//import mekanism.common.lib.attribute.AttributeCache;
 import mekanism.common.network.PacketModeChange;
 import mekanism.common.network.PacketPortableTeleporterGui;
 import mekanism.common.network.PacketPortableTeleporterGui.PortableTeleporterPacketType;
@@ -163,6 +164,20 @@ public class ClientTickHandler {
         }
     }
 
+    private void jetPackSetMotionHorizontal(Double x, Double y, Double z, Vector3d motion){
+        boolean accelerating = minecraft.gameSettings.keyBindForward.isKeyDown();
+        boolean decelerating = minecraft.gameSettings.keyBindBack.isKeyDown();
+
+        // y value is pre-calulated from existing logic, while X & Z values are calculated on the fly depending on player action
+
+        if (accelerating)
+            minecraft.player.setMotion(motion.getX() + x, y, motion.getZ() + z);
+        else if (decelerating)
+            minecraft.player.setMotion(motion.getX() - x, y, motion.getZ() - z);
+        else
+            minecraft.player.setMotion(motion.getX(), y, motion.getZ()); // A step in the right direction
+    }
+
     public void tickStart() {
         MekanismClient.ticksPassed++;
 
@@ -223,26 +238,36 @@ public class ClientTickHandler {
             }
 
             if (isJetpackActive(minecraft.player)) {
+                float jetpackSpeedModifier = MekanismConfig.gear.jetpackHorizontalSpeedModifier.get();
+                //float jetpackSpeedModifier = ((ItemJetpack) chestStack.getItem()).getJetpackSpeedModifier().get();
                 JetpackMode mode = getJetpackMode(chestStack);
                 Vector3d motion = minecraft.player.getMotion();
+
+                double playerXVec = Math.cos(Math.toRadians(minecraft.player.rotationYaw + 90)) * jetpackSpeedModifier;
+                double playerZVec = Math.sin(Math.toRadians(minecraft.player.rotationYaw + 90)) * jetpackSpeedModifier;
+
                 if (mode == JetpackMode.NORMAL) {
-                    minecraft.player.setMotion(motion.getX(), Math.min(motion.getY() + 0.15D, 0.5D), motion.getZ());
+                    jetPackSetMotionHorizontal(playerXVec, Math.min(motion.getY() + 0.15D, 0.5D), playerZVec, motion);
                     minecraft.player.fallDistance = 0.0F;
                 } else if (mode == JetpackMode.HOVER) {
                     boolean ascending = minecraft.gameSettings.keyBindJump.isKeyDown();
                     boolean descending = minecraft.gameSettings.keyBindSneak.isKeyDown();
                     if ((!ascending && !descending) || (ascending && descending) || minecraft.currentScreen != null) {
                         if (motion.getY() > 0) {
-                            minecraft.player.setMotion(motion.getX(), Math.max(motion.getY() - 0.15D, 0), motion.getZ());
+                            //minecraft.player.setMotion(motion.getX() + x, Math.min(motion.getY() - 0.15D, 0), motion.getZ() + z);
+                            jetPackSetMotionHorizontal(playerXVec, Math.min(motion.getY() - 0.15D, 0), playerZVec, motion);
                         } else if (motion.getY() < 0) {
                             if (!CommonPlayerTickHandler.isOnGround(minecraft.player)) {
-                                minecraft.player.setMotion(motion.getX(), Math.min(motion.getY() + 0.15D, 0), motion.getZ());
+                                //minecraft.player.setMotion(motion.getX() + x, Math.min(motion.getY() + 0.15D, 0), motion.getZ() + z);
+                                jetPackSetMotionHorizontal(playerXVec, Math.min(motion.getY() + 0.15D, 0), playerZVec, motion);
                             }
                         }
                     } else if (ascending) {
-                        minecraft.player.setMotion(motion.getX(), Math.min(motion.getY() + 0.15D, 0.2D), motion.getZ());
+                        //minecraft.player.setMotion(motion.getX() + x, Math.min(motion.getY() + 0.15D, 0.2D), motion.getZ() + z);
+                        jetPackSetMotionHorizontal(playerXVec, Math.min(motion.getY() + 0.15D, 0.2D), playerZVec, motion);
                     } else if (!CommonPlayerTickHandler.isOnGround(minecraft.player)) {
-                        minecraft.player.setMotion(motion.getX(), Math.max(motion.getY() - 0.15D, -0.2D), motion.getZ());
+                        //minecraft.player.setMotion(motion.getX() + x, Math.min(motion.getY() - 0.15D, -0.2D), motion.getZ() + z);
+                        jetPackSetMotionHorizontal(playerXVec, Math.min(motion.getY() - 0.15D, -0.2D), playerZVec, motion);
                     }
                     minecraft.player.fallDistance = 0.0F;
                 }

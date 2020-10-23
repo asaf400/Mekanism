@@ -65,6 +65,7 @@ public class GearConfig extends BaseMekanismConfig {
     //Jetpack
     public final CachedLongValue jetpackMaxGas;
     public final CachedLongValue jetpackFillRate;
+    public final CachedFloatValue jetpackHorizontalSpeedModifier;
     //Armored Jetpack
     public final CachedIntValue armoredJetpackArmor;
     public final CachedFloatValue armoredJetpackToughness;
@@ -195,6 +196,8 @@ public class GearConfig extends BaseMekanismConfig {
               .defineInRange("maxGas", 24_000, 1, Long.MAX_VALUE));
         jetpackFillRate = CachedLongValue.wrap(this, builder.comment("Amount of hydrogen the Jetpack can accept per tick.")
               .defineInRange("fillRate", 16, 1, Long.MAX_VALUE));
+        jetpackHorizontalSpeedModifier = CachedFloatValue.wrap(this, builder.comment("Player Speed During flight modifier, this value is added to base minecraft speeds (0.1 is Minecraft walk speed, and 0.13 is Running)")
+                .define("jetSpeedModifier", 0.05));
         builder.comment("Armored Jetpack Settings").push(ARMORED_JETPACK_SUBCATEGORY);
         armoredJetpackArmor = CachedIntValue.wrap(this, builder.comment("Armor value of the Armored Jetpack.")
               .define("armor", 12));

@@ -11,6 +11,7 @@ import mekanism.api.IIncrementalEnum;
 import mekanism.api.NBTConstants;
 import mekanism.api.chemical.gas.GasStack;
 import mekanism.api.chemical.gas.IGasHandler;
+import mekanism.api.functions.FloatSupplier;
 import mekanism.api.math.MathUtils;
 import mekanism.api.providers.IGasProvider;
 import mekanism.api.text.EnumColor;
@@ -64,6 +65,8 @@ public class ItemJetpack extends ItemGasArmor implements IItemHUDProvider, IMode
     protected LongSupplier getFillRate() {
         return MekanismConfig.gear.jetpackFillRate;
     }
+
+    protected FloatSupplier getJetpackSpeedModifier() { return MekanismConfig.gear.jetpackHorizontalSpeedModifier; }
 
     @Override
     protected IGasProvider getGasType() {
